@@ -9,7 +9,7 @@ def is_palindrome(string):
 
 class PalinServer:
     """Wrapper class that handles server logic"""
-    host_name = ""
+    host_name = "localhost"
     port_number = 12752
 
     def __init__(self, host_name, port_number):
