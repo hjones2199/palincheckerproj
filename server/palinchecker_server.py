@@ -86,7 +86,16 @@ class PalinServer:
 
 def main():
     """Entry point if the server is run directly"""
-    mainserv = PalinServer("", 12752)
+    mainserv = None
+    if len(sys.argv) == 1:
+        mainserv = PalinServer("", 12752)
+    elif len(sys.argv) == 2:
+        mainserv = PalinServer(sys.argv[1], 12752)
+    elif len(sys.argv) == 3:
+        mainserv = PalinServer(sys.argv[1], int(sys.argv[2]))
+    else:
+        print("Error: invalid syntax\nUsage:" + sys.argv[0] + " [ip addr] [port number]")
+        exit(1)
     mainserv.run()
     userIn = input("Enter q to shutdown: ")
     while userIn != 'q':
