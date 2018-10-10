@@ -76,7 +76,7 @@ class PalinServer:
 
 def main():
     """Entry point if the server is run directly"""
-    mainserv = PalinServer("localhost", 12752)
+    mainserv = PalinServer("", 12752)
     mainserv.run()
     userIn = input("Enter q to shutdown: ")
     while userIn != 'q':
