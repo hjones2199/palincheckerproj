@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """A TCP server to check if a string supplied by a client is a palindrome"""
 import sys
 import socketserver
