@@ -1,4 +1,5 @@
 """A TCP server to check if a string supplied by a client is a palindrome"""
+import sys
 import socketserver
 import os
 from multiprocessing import Process, Queue
@@ -33,8 +34,7 @@ class ForkingServerTCP(socketserver.ForkingMixIn, socketserver.TCPServer):
         super().service_actions()
         if self.queueref.empty() != True:
             if self.queueref.get() == 'q':
-                self.shutdown()
-                self.server_close()
+                self.server_close() #Unbinds from socket
                 exit(0)
     
     def queued_serve_forever(self, q1):
@@ -70,10 +70,11 @@ class PalinServer:
             return #Maybe add error checking
         self.pqueue = Queue()
         server = ForkingServerTCP((self.host_name, self.port_number), TCPForkHandler)
-        self.pserv = Process(server.queued_serve_forever(self.pqueue))
+        self.pserv = Process(target=server.queued_serve_forever, args=(self.pqueue,))
         self.pserv.start()
         self.running = True
         print("Server process started on: " + self.host_name  + ":" + str(self.port_number))
+        sys.stdout.flush()
     
     def stop(self):
         """Signals the server process to stop gracefully"""
@@ -81,8 +82,7 @@ class PalinServer:
             exit(127) #maybe error check
         self.pqueue.put('q')
         self.pserv.join()
-
-            
+        print("Server successfully shutdown")
 
 def main():
     """Entry point if the server is run directly"""
