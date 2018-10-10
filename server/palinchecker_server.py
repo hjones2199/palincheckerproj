@@ -13,7 +13,10 @@ def is_palindrome(string):
 class TCPForkHandler(socketserver.BaseRequestHandler):
     """Handles multiprocess logic for an a TCP server that accepts ASCII"""
     def handle(self):
-        """TODO"""
+        """
+        Runs once per client connection in its own process. Accepts string from client
+        and replies True or False depending on whether the string was a palindrome.
+        """
         client_req = self.request.recv(2048)
         answer = is_palindrome(str(client_req, 'ascii').rstrip()) #True or False
         if answer:
@@ -24,7 +27,9 @@ class TCPForkHandler(socketserver.BaseRequestHandler):
 class ForkingServerTCP(socketserver.ForkingMixIn, socketserver.TCPServer):
     """Handles Unix fork logic automatically"""
     queueref = None
+
     def service_actions(self):
+        """Runs periodically to check whether the server should shut down"""
         super().service_actions()
         if self.queueref.empty() != True:
             if self.queueref.get() == 'q':
@@ -33,13 +38,17 @@ class ForkingServerTCP(socketserver.ForkingMixIn, socketserver.TCPServer):
                 exit(0)
     
     def queued_serve_forever(self, q1):
+        """
+        Helper method run once per server instance and allows communcation
+        between the server processes and the server command line interface.
+        """
         self.queueref = q1
         self.serve_forever()
 
         
 
 class PalinServer:
-    """Wrapper class that handles server logic"""
+    """Wrapper class that handles server logic in an interface agnostic manner"""
     host_name = "localhost"
     port_number = 12752
     pserv = None
@@ -67,6 +76,7 @@ class PalinServer:
         print("Server process started on: " + self.host_name  + ":" + str(self.port_number))
     
     def stop(self):
+        """Signals the server process to stop gracefully"""
         if self.running != True:
             exit(127) #maybe error check
         self.pqueue.put('q')
