@@ -8,7 +8,7 @@ as to whether the given string is a palindrome. To quit you simply input q.
 
 **Server Usage**
     The server is found at server/palindrome_server.py, and can either take no
-arguments or exactly 2 arguments *<ip address to bind to>* *port*. If no command
+arguments or exactly 2 arguments *IP_ADDR* *PORT*. If no command
 line arguments are given it will bind to all IP addresses at port 12752. The server
 can be shut down by inputting q.
 
