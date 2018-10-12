@@ -19,3 +19,8 @@ on python3 specific features, namely the socketserver module and the object orie
 multiprocessing implementation. The server also relies on a Unix specific multiprocess
 system based on the Posix *fork()* system call. I have tested it on multiple Linux
 distributions and FreeBSD, but it should run on any POSIX compliant system.
+
+**Author Information**
+    Name: Hunter Jones
+    L#:   L20298275
+
